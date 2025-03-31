@@ -39,16 +39,7 @@ const Index = () => {
           isLoading={trendingLoading}
           error={trendingError as Error}
         />
-        
-        <RecommendationList 
-          title="Recommandé pour vous" 
-          movies={personalizedMovies || []}
-          isLoading={personalizedLoading}
-          error={personalizedError as Error}
-          emptyMessage="Ajoutez des films à vos favoris pour obtenir des recommandations personnalisées"
-        />
-        
-        <GenreSelector 
+          <GenreSelector 
           selectedGenre={selectedGenre} 
           onChange={handleGenreChange} 
         />
@@ -63,7 +54,7 @@ const Index = () => {
           />
         )}
       </main>
-      
+        
       <footer className="bg-dark-800 text-gray-400 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center">© 2023 CineFellow - Film & Series Recommendations</p>
