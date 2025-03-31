@@ -1,4 +1,3 @@
-
 // TMDB API Configuration
 const TMDB_API_KEY = 'c2521840e0cfff7c88c564de23f7cac4';
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
@@ -215,6 +214,110 @@ export const fetchMediaByGenre = async (genreId: number): Promise<Movie[]> => {
     return [...movies, ...tvShows].sort(() => Math.random() - 0.5);
   } catch (error) {
     console.error('Error fetching by genre:', error);
+    return [];
+  }
+};
+
+// Fetch watch providers for a movie or TV show
+export const fetchWatchProviders = async (id: number, type: 'movie' | 'tv') => {
+  try {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/${type}/${id}/watch/providers?api_key=${TMDB_API_KEY}`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch watch providers for ${type}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching watch providers:`, error);
+    return null;
+  }
+};
+
+// Fetch movie or TV show videos (trailers, teasers, etc.)
+export const fetchVideos = async (id: number, type: 'movie' | 'tv') => {
+  try {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/${type}/${id}/videos?api_key=${TMDB_API_KEY}&language=fr-FR`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch videos for ${type}`);
+    }
+    
+    const data = await response.json();
+    
+    // Sort videos to prioritize trailers and french content
+    return data.results.sort((a: any, b: any) => {
+      // Prioritize trailers
+      if (a.type === 'Trailer' && b.type !== 'Trailer') return -1;
+      if (a.type !== 'Trailer' && b.type === 'Trailer') return 1;
+      
+      // Then prioritize French language
+      if (a.iso_639_1 === 'fr' && b.iso_639_1 !== 'fr') return -1;
+      if (a.iso_639_1 !== 'fr' && b.iso_639_1 === 'fr') return 1;
+      
+      // Then sort by published date, newest first
+      return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+    });
+  } catch (error) {
+    console.error(`Error fetching videos:`, error);
+    return [];
+  }
+};
+
+// Fetch movie or TV show credits (cast & crew)
+export const fetchCredits = async (id: number, type: 'movie' | 'tv') => {
+  try {
+    const response = await fetch(
+      `${TMDB_BASE_URL}/${type}/${id}/credits?api_key=${TMDB_API_KEY}&language=fr-FR`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch credits for ${type}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching credits:`, error);
+    return { cast: [], crew: [] };
+  }
+};
+
+// Search movies by year range
+export const searchByYear = async (year: number | string | null, yearFrom?: string | null, yearTo?: string | null) => {
+  try {
+    let url;
+    
+    if (year) {
+      // Search for exact year
+      url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&language=fr-FR&primary_release_year=${year}&sort_by=popularity.desc`;
+    } else if (yearFrom && yearTo) {
+      // Search for year range
+      url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&language=fr-FR&primary_release_date.gte=${yearFrom}-01-01&primary_release_date.lte=${yearTo}-12-31&sort_by=popularity.desc`;
+    } else {
+      throw new Error('No year parameters provided');
+    }
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error('Failed to search by year');
+    }
+    
+    const data = await response.json();
+    const genresMap = await fetchGenresMap();
+    
+    return data.results.map((item: TMDBMovie) => {
+      const movie = convertTMDBToMovie(item);
+      // Add genres based on genre_ids
+      movie.genres = item.genre_ids.map(id => genresMap[id] || '').filter(Boolean);
+      return movie;
+    });
+  } catch (error) {
+    console.error('Error searching by year:', error);
     return [];
   }
 };

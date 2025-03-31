@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { Movie } from '@/data/movies';
 import * as tmdbService from '@/services/tmdb';
@@ -10,8 +9,10 @@ export function useTrendingMovies() {
     queryKey: ['trending'],
     queryFn: tmdbService.fetchTrending,
     staleTime: 1000 * 60 * 10, // 10 minutes
-    onError: () => {
-      toast.error('Impossible de récupérer les films tendance');
+    meta: {
+      onError: () => {
+        toast.error('Impossible de récupérer les films tendance');
+      }
     }
   });
 }
@@ -21,8 +22,10 @@ export function useMovieDetails(id: number, type: 'movie' | 'tv') {
     queryKey: ['movie', id, type],
     queryFn: () => tmdbService.fetchMediaDetails(id, type),
     staleTime: 1000 * 60 * 30, // 30 minutes
-    onError: () => {
-      toast.error('Impossible de récupérer les détails du média');
+    meta: {
+      onError: () => {
+        toast.error('Impossible de récupérer les détails du média');
+      }
     }
   });
 }
@@ -33,8 +36,10 @@ export function useSearchMovies(query: string) {
     queryFn: () => tmdbService.searchMedia(query),
     enabled: query.length > 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    onError: () => {
-      toast.error('Erreur lors de la recherche');
+    meta: {
+      onError: () => {
+        toast.error('Erreur lors de la recherche');
+      }
     }
   });
 }
@@ -44,8 +49,10 @@ export function useGenreMovies(genreId: number) {
     queryKey: ['genre', genreId],
     queryFn: () => tmdbService.fetchMediaByGenre(genreId),
     staleTime: 1000 * 60 * 15, // 15 minutes
-    onError: () => {
-      toast.error('Impossible de récupérer les médias par genre');
+    meta: {
+      onError: () => {
+        toast.error('Impossible de récupérer les médias par genre');
+      }
     }
   });
 }
@@ -55,8 +62,10 @@ export function useRecommendations(id: number, type: 'movie' | 'tv') {
     queryKey: ['recommendations', id, type],
     queryFn: () => tmdbService.fetchRecommendations(id, type),
     staleTime: 1000 * 60 * 15, // 15 minutes
-    onError: () => {
-      toast.error('Impossible de récupérer les recommandations');
+    meta: {
+      onError: () => {
+        toast.error('Impossible de récupérer les recommandations');
+      }
     }
   });
 }
@@ -68,8 +77,10 @@ export function usePersonalizedRecommendations() {
     queryKey: ['personalized', preferredGenres, favoriteMovies],
     queryFn: () => tmdbService.getPersonalizedRecommendations(preferredGenres, favoriteMovies),
     staleTime: 1000 * 60 * 10, // 10 minutes
-    onError: () => {
-      toast.error('Impossible de récupérer les recommandations personnalisées');
+    meta: {
+      onError: () => {
+        toast.error('Impossible de récupérer les recommandations personnalisées');
+      }
     }
   });
 }

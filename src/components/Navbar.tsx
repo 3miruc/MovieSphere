@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Film, Menu, X } from 'lucide-react';
+import { Search, Film, Menu, X, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -38,7 +38,7 @@ const Navbar = () => {
             <form onSubmit={handleSearch} className="flex items-center">
               <Input
                 type="text"
-                placeholder="Search movies & series..."
+                placeholder="Rechercher films & séries..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-dark-700 border-dark-600 focus:border-cinema-600 text-white w-64"
@@ -51,13 +51,17 @@ const Navbar = () => {
           
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-              Home
+              Accueil
             </Link>
             <Link to="/search?q=movie" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-              Movies
+              Films
             </Link>
             <Link to="/search?q=series" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-              Series
+              Séries
+            </Link>
+            <Link to="/favorites" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center">
+              <Heart className="h-4 w-4 mr-1" />
+              Favoris
             </Link>
           </div>
           
@@ -80,7 +84,7 @@ const Navbar = () => {
             <div className="flex items-center">
               <Input
                 type="text"
-                placeholder="Search movies & series..."
+                placeholder="Rechercher films & séries..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-dark-700 border-dark-600 text-white w-full"
@@ -96,21 +100,29 @@ const Navbar = () => {
               className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Home
+              Accueil
             </Link>
             <Link 
               to="/search?q=movie" 
               className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Movies
+              Films
             </Link>
             <Link 
               to="/search?q=series" 
               className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Series
+              Séries
+            </Link>
+            <Link 
+              to="/favorites" 
+              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Heart className="h-4 w-4 mr-1" />
+              Favoris
             </Link>
           </div>
         </div>
