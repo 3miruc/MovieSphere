@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, Calendar, Filter } from 'lucide-react';
+import { Search, Calendar, Filter, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,7 +34,7 @@ const AdvancedSearch = () => {
   const [query, setQuery] = useState('');
   const [year, setYear] = useState<number | null>(null);
   const [yearRange, setYearRange] = useState([1900, currentYear]);
-  const [searchMode, setSearchMode] = useState<'query' | 'yearRange'>('query');
+  const [searchMode, setSearchMode] = useState<'query' | 'yearRange' | 'specificYear'>('query');
   const [openDialog, setOpenDialog] = useState(false);
 
   // Initialize state from URL params
@@ -51,6 +51,7 @@ const AdvancedSearch = () => {
     
     if (yearParam) {
       setYear(parseInt(yearParam));
+      setSearchMode('specificYear');
     }
     
     if (yearFromParam && yearToParam) {
@@ -78,10 +79,13 @@ const AdvancedSearch = () => {
         params.set('yearFrom', yearRange[0].toString());
         params.set('yearTo', yearRange[1].toString());
       }
-    } else {
+    } else if (searchMode === 'yearRange') {
       // Year range search mode
       params.set('yearFrom', yearRange[0].toString());
       params.set('yearTo', yearRange[1].toString());
+    } else if (searchMode === 'specificYear' && year) {
+      // Specific year search mode
+      params.set('year', year.toString());
     }
     
     navigate(`/search?${params.toString()}`);
@@ -102,10 +106,11 @@ const AdvancedSearch = () => {
             <DialogTitle>Recherche avancée</DialogTitle>
           </DialogHeader>
           
-          <Tabs defaultValue={searchMode} onValueChange={(value) => setSearchMode(value as 'query' | 'yearRange')}>
-            <TabsList className="grid grid-cols-2 mb-4">
+          <Tabs defaultValue={searchMode} onValueChange={(value) => setSearchMode(value as 'query' | 'yearRange' | 'specificYear')}>
+            <TabsList className="grid grid-cols-3 mb-4">
               <TabsTrigger value="query">Par titre</TabsTrigger>
-              <TabsTrigger value="yearRange">Par années</TabsTrigger>
+              <TabsTrigger value="yearRange">Par période</TabsTrigger>
+              <TabsTrigger value="specificYear">Par année</TabsTrigger>
             </TabsList>
             
             <form onSubmit={handleSearch} className="space-y-4 pt-4">
@@ -154,18 +159,34 @@ const AdvancedSearch = () => {
                 </div>
               </TabsContent>
               
+              <TabsContent value="specificYear" className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="specific-year">Année précise</Label>
+                  <Input
+                    id="specific-year"
+                    type="number"
+                    min="1900"
+                    max={currentYear}
+                    placeholder="Ex: 2024"
+                    value={year || ''}
+                    onChange={(e) => setYear(e.target.value ? parseInt(e.target.value) : null)}
+                  />
+                </div>
+              </TabsContent>
+              
               <Button type="submit" className="w-full">Rechercher</Button>
             </form>
           </Tabs>
         </DialogContent>
       </Dialog>
 
-      {/* Desktop view - Popover */}
+      {/* Desktop view - Popover and direct buttons */}
       <div className="hidden md:flex items-center gap-2">
-        <Tabs defaultValue={searchMode} onValueChange={(value) => setSearchMode(value as 'query' | 'yearRange')} className="w-full">
+        <Tabs defaultValue={searchMode} onValueChange={(value) => setSearchMode(value as 'query' | 'yearRange' | 'specificYear')} className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="query">Recherche par titre</TabsTrigger>
-            <TabsTrigger value="yearRange">Recherche par années</TabsTrigger>
+            <TabsTrigger value="yearRange">Recherche par période</TabsTrigger>
+            <TabsTrigger value="specificYear">Recherche par année</TabsTrigger>
           </TabsList>
           
           <TabsContent value="query">
@@ -250,7 +271,26 @@ const AdvancedSearch = () => {
               
               <Button type="submit">
                 <Calendar className="h-5 w-5 mr-2" />
-                Rechercher par années
+                Rechercher par période
+              </Button>
+            </form>
+          </TabsContent>
+          
+          <TabsContent value="specificYear">
+            <form onSubmit={handleSearch} className="flex items-center gap-2">
+              <Input
+                type="number"
+                min="1900"
+                max={currentYear}
+                placeholder="Année précise (ex: 2024)"
+                value={year || ''}
+                onChange={(e) => setYear(e.target.value ? parseInt(e.target.value) : null)}
+                className="w-64"
+              />
+              
+              <Button type="submit" variant="default">
+                <Film className="h-5 w-5 mr-2" />
+                Films & Séries de {year || "l'année"}
               </Button>
             </form>
           </TabsContent>

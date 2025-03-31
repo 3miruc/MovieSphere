@@ -397,3 +397,44 @@ export const searchByYearRange = async (yearFrom: number, yearTo: number): Promi
     return [];
   }
 };
+
+// Search movies by specific year
+export const searchByYear = async (year: number): Promise<Movie[]> => {
+  try {
+    // Search for both movies and TV shows in the specified year
+    const [movieResponse, tvResponse] = await Promise.all([
+      fetch(`${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&language=fr-FR&primary_release_year=${year}&sort_by=popularity.desc`),
+      fetch(`${TMDB_BASE_URL}/discover/tv?api_key=${TMDB_API_KEY}&language=fr-FR&first_air_date_year=${year}&sort_by=popularity.desc`)
+    ]);
+    
+    if (!movieResponse.ok || !tvResponse.ok) {
+      throw new Error('Failed to search by year');
+    }
+    
+    const movieData = await movieResponse.json();
+    const tvData = await tvResponse.json();
+    const genresMap = await fetchGenresMap();
+    
+    // Process movies
+    const movies = movieData.results.map((item: TMDBMovie) => {
+      item.media_type = 'movie';
+      const movie = convertTMDBToMovie(item);
+      movie.genres = item.genre_ids.map(id => genresMap[id] || '').filter(Boolean);
+      return movie;
+    });
+    
+    // Process TV shows
+    const tvShows = tvData.results.map((item: TMDBMovie) => {
+      item.media_type = 'tv';
+      const show = convertTMDBToMovie(item);
+      show.genres = item.genre_ids.map(id => genresMap[id] || '').filter(Boolean);
+      return show;
+    });
+    
+    // Combine and shuffle the results
+    return [...movies, ...tvShows].sort(() => Math.random() - 0.5);
+  } catch (error) {
+    console.error('Error searching by year:', error);
+    return [];
+  }
+};

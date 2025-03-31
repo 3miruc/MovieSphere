@@ -58,6 +58,20 @@ export function useSearchByYearRange(yearFrom: number, yearTo: number) {
   });
 }
 
+export function useSearchByYear(year: number) {
+  return useQuery({
+    queryKey: ['searchByYear', year],
+    queryFn: () => tmdbService.searchByYear(year),
+    enabled: year > 1900 && year <= new Date().getFullYear(),
+    staleTime: 1000 * 60 * 10, // 10 minutes
+    meta: {
+      onError: () => {
+        toast.error('Erreur lors de la recherche par année');
+      }
+    }
+  });
+}
+
 export function useGenreMovies(genreId: number) {
   return useQuery({
     queryKey: ['genre', genreId],
