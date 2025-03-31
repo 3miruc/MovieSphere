@@ -1,4 +1,3 @@
-
 export interface Movie {
   id: number;
   title: string;
@@ -11,12 +10,13 @@ export interface Movie {
   description: string;
   duration?: string;
   seasons?: number;
+  tmdbId?: number; // TMDB ID for API calls
 }
 
 export const genres = [
-  'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 
-  'Documentary', 'Drama', 'Fantasy', 'Horror', 'Mystery',
-  'Romance', 'Sci-Fi', 'Thriller'
+  'Action', 'Aventure', 'Animation', 'Comédie', 'Crime', 
+  'Documentaire', 'Drame', 'Fantastique', 'Horreur', 'Mystère',
+  'Romance', 'Science-Fiction', 'Thriller'
 ];
 
 export const mockMovies: Movie[] = [
