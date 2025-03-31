@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import MovieCard from '@/components/MovieCard';
 import GenreSelector from '@/components/GenreSelector';
 import AdvancedSearch from '@/components/AdvancedSearch';
-import { useSearchMovies } from '@/hooks/useMovies';
+import { useSearchMovies, useSearchByYearRange } from '@/hooks/useMovies';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Search = () => {
@@ -18,22 +18,35 @@ const Search = () => {
   
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
-  // Use the custom hook for search
-  const { data: searchResults, isLoading } = useSearchMovies(query);
+  // Use the custom hook for search by query
+  const { data: searchResults, isLoading: isLoadingSearch } = useSearchMovies(query);
+  
+  // Use the custom hook for search by year range
+  const yearFromNum = yearFrom ? parseInt(yearFrom) : 0;
+  const yearToNum = yearTo ? parseInt(yearTo) : 0;
+  const { data: yearRangeResults, isLoading: isLoadingYearRange } = 
+    useSearchByYearRange(yearFromNum, yearToNum);
+  
+  // Determine which results to show based on available parameters
+  const showingYearRangeResults = yearFrom && yearTo && !query;
+  const results = showingYearRangeResults ? yearRangeResults : searchResults;
+  const isLoading = showingYearRangeResults ? isLoadingYearRange : isLoadingSearch;
   
   // Filter by year and genre
-  const filteredResults = searchResults?.filter(movie => {
-    // Year filter
-    if (year && movie.year !== parseInt(year)) {
-      return false;
-    }
-    
-    if (yearFrom && movie.year < parseInt(yearFrom)) {
-      return false;
-    }
-    
-    if (yearTo && movie.year > parseInt(yearTo)) {
-      return false;
+  const filteredResults = results?.filter(movie => {
+    // Year filter - only apply if we're not already filtering by year range
+    if (!showingYearRangeResults) {
+      if (year && movie.year !== parseInt(year)) {
+        return false;
+      }
+      
+      if (yearFrom && movie.year < parseInt(yearFrom)) {
+        return false;
+      }
+      
+      if (yearTo && movie.year > parseInt(yearTo)) {
+        return false;
+      }
     }
     
     // Genre filter
@@ -52,9 +65,10 @@ const Search = () => {
         <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold mb-2">
-              {query ? `Recherche pour "${query}"` : 'Explorer les titres'}
-              {year && ` (${year})`}
-              {yearFrom && yearTo && ` (${yearFrom}-${yearTo})`}
+              {query ? `Recherche pour "${query}"` : 
+                (showingYearRangeResults ? `Films et séries entre ${yearFrom} et ${yearTo}` : 'Explorer les titres')}
+              {!showingYearRangeResults && year && ` (${year})`}
+              {!showingYearRangeResults && yearFrom && yearTo && ` (${yearFrom}-${yearTo})`}
             </h1>
             {!isLoading && (
               <p className="text-gray-400">
@@ -76,7 +90,7 @@ const Search = () => {
               </div>
             ))}
           </div>
-        ) : searchResults && searchResults.length > 0 ? (
+        ) : results && results.length > 0 ? (
           <>
             <GenreSelector 
               selectedGenre={selectedGenre} 
@@ -104,9 +118,11 @@ const Search = () => {
             <SearchIcon className="mx-auto h-12 w-12 text-gray-600 mb-4" />
             <h2 className="text-xl font-semibold mb-2">Aucun résultat trouvé</h2>
             <p className="text-gray-400 max-w-md mx-auto">
-              {query 
-                ? `Nous n'avons pas trouvé de titres correspondant à "${query}"${selectedGenre ? ` dans le genre ${selectedGenre}` : ''}.` 
-                : 'Essayez de chercher un titre de film ou série, un genre ou un mot-clé.'}
+              {showingYearRangeResults
+                ? `Nous n'avons pas trouvé de titres entre ${yearFrom} et ${yearTo}${selectedGenre ? ` dans le genre ${selectedGenre}` : ''}.`
+                : query 
+                  ? `Nous n'avons pas trouvé de titres correspondant à "${query}"${selectedGenre ? ` dans le genre ${selectedGenre}` : ''}.`
+                  : 'Essayez de chercher un titre de film ou série, un genre ou un mot-clé.'}
             </p>
           </div>
         )}
