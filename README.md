@@ -49,5 +49,6 @@ npm run dev
 
 Cela démarrera le serveur de développement, et vous pourrez accéder à l'application en ouvrant votre navigateur à l'adresse http://localhost:3000.
 
-## Conclusion : MovieSphere est un projet en constante évolution, visant à offrir une expérience fluide et agréable pour les amateurs de cinéma. Ce site représente mes compétences en développement web et est une ressource pratique pour découvrir de nouveaux films et séries tout en gardant une trace de vos préférés. Je continue à améliorer et à enrichir ses fonctionnalités pour répondre aux attentes des utilisateurs.
+## Conclusion 
+MovieSphere est un projet en constante évolution, visant à offrir une expérience fluide et agréable pour les amateurs de cinéma. Ce site représente mes compétences en développement web et est une ressource pratique pour découvrir de nouveaux films et séries tout en gardant une trace de vos préférés. Je continue à améliorer et à enrichir ses fonctionnalités pour répondre aux attentes des utilisateurs.
 
