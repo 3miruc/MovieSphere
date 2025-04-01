@@ -1,18 +1,17 @@
-
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import { useMovieDetails, useRecommendations } from '@/hooks/useMovies';
 import MovieCard from '@/components/MovieCard';
 import FavoriteButton from '@/components/FavoriteButton';
-import RatingSelector from '@/components/RatingSelector';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useRatings } from '@/hooks/useMovies';
 import CastSection from '@/components/CastSection';
 import TrailerSection from '@/components/TrailerSection';
 import StreamingPlatforms from '@/components/StreamingPlatforms';
 import ReviewSection from '@/components/ReviewSection';
+import { useRatings } from '@/hooks/useMovies';
 
 const Details = () => {
   const { id } = useParams();
@@ -161,14 +160,6 @@ const Details = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-10">
                 <CastSection movieId={data.id} type={type} />
-                
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold">Votre Note</h3>
-                  <RatingSelector 
-                    value={userRating} 
-                    onChange={handleRating} 
-                  />
-                </div>
                 
                 <ReviewSection movieId={data.id} />
                 

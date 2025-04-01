@@ -1,11 +1,9 @@
-
 import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Movie } from '@/data/movies';
 import FavoriteButton from './FavoriteButton';
-import { useRatings } from '@/hooks/useMovies';
 
 interface MovieCardProps {
   movie: Movie;
@@ -13,9 +11,6 @@ interface MovieCardProps {
 }
 
 const MovieCard = ({ movie, highlighted = false }: MovieCardProps) => {
-  const { getMovieRating } = useRatings();
-  const userRating = getMovieRating(movie.id);
-  
   return (
     <Link to={`/details/${movie.id}`}>
       <Card className={`overflow-hidden bg-dark-800 border-dark-700 movie-card-hover ${highlighted ? 'border-cinema-600 shadow-lg shadow-cinema-900/20' : ''}`}>
