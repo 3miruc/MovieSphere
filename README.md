@@ -37,7 +37,7 @@ API TMDB : Récupération des informations de films et séries à partir de la b
 Pour installer et exécuter MovieSphere sur votre machine locale, suivez les étapes ci-dessous :
 
 Clonez le projet depuis GitHub :
-git clone <[URL_DU_REPOSITORY_GITHUB](https://github.com/3miruc/MovieSphere.git)>
+git clone <[URL_DU_REPOSITORY_GITHUB](3miruc/MovieSphere.git)>
 Accédez au répertoire du projet :
 
 Installez les dépendances nécessaires :
