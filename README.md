@@ -1,69 +1,55 @@
-# Welcome to your Lovable project
+MovieSphere - Mon site de recommandations de films et séries
 
-## Project info
+Bienvenue sur MovieSphere, un site conçu pour vous aider à découvrir des films et des séries qui correspondent à vos goûts. Ce projet a été réalisé avec Node.js et Vue.js, et permet aux utilisateurs de naviguer à travers une large sélection de films et séries tout en bénéficiant d'une interface claire et intuitive.
 
-**URL**: https://lovable.dev/projects/a8a12787-6986-4fbe-b5bb-c0d8403ec1f9
+À propos du projet
+MovieSphere est une plateforme qui offre des recommandations de films et de séries. L'objectif principal est de simplifier la recherche en fonction de genres et de permettre aux utilisateurs de créer des listes de favoris.
 
-## How can I edit this code?
+Sections principales :
 
-There are several ways of editing your application.
+Films et Séries : Navigation à travers une large base de données de films et de séries, triés par genres.
 
-**Use Lovable**
+Favoris : Ajoutez vos films et séries préférés à vos favoris, organisés par catégories distinctes (Films, Séries).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a8a12787-6986-4fbe-b5bb-c0d8403ec1f9) and start prompting.
+Recherche : Un moteur de recherche intégré vous permet de trouver rapidement le contenu de votre choix.
 
-Changes made via Lovable will be committed automatically to this repo.
+Avis et Notation : Laissez des avis et attribuez des étoiles pour chaque film ou série.
+Fonctionnalités :
 
-**Use your preferred IDE**
+Design Responsive : S'adapte à toutes les tailles d'écran (ordinateurs, tablettes, smartphones).
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Recherche avancée : Recherchez des films ou des séries par genre ou titre.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Gestion des favoris : Classez vos films et séries préférés dans des sections distinctes.
 
-Follow these steps:
+Notation et Avis : Évaluez le contenu avec des étoiles et laissez un avis.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Affichage dynamique : Les films et séries sont automatiquement mis à jour à chaque ajout aux favoris.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Technologies utilisées
+Node.js & Vue.js : Ces technologies permettent une expérience utilisateur fluide et performante.
 
-# Step 3: Install the necessary dependencies.
-npm i
+Tailwind CSS : Utilisé pour un design moderne et responsive.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+API TMDB : Récupération des informations de films et séries à partir de la base de données TMDB.
+
+Vuex (pour la gestion des favoris) : Permet de stocker et gérer les films et séries ajoutés aux favoris.
+
+Installation du projet
+Pour installer et exécuter MovieSphere sur votre machine locale, suivez les étapes ci-dessous :
+
+Clonez le projet depuis GitHub :
+git clone <[URL_DU_REPOSITORY_GITHUB](https://github.com/3miruc/MovieSphere.git)>
+Accédez au répertoire du projet :
+
+Installez les dépendances nécessaires :
+
+npm install
+Lancez le serveur de développement :
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+Cela démarrera le serveur de développement, et vous pourrez accéder à l'application en ouvrant votre navigateur à l'adresse http://localhost:3000.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Conclusion : MovieSphere est un projet en constante évolution, visant à offrir une expérience fluide et agréable pour les amateurs de cinéma. Ce site représente mes compétences en développement web et est une ressource pratique pour découvrir de nouveaux films et séries tout en gardant une trace de vos préférés. Je continue à améliorer et à enrichir ses fonctionnalités pour répondre aux attentes des utilisateurs.
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a8a12787-6986-4fbe-b5bb-c0d8403ec1f9) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
