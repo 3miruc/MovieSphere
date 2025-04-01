@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTrendingMovies } from '@/hooks/useMovies';
 import { Skeleton } from './ui/skeleton';
+import { Movie } from '@/data/movies';
 
 const Hero = () => {
   const [featuredMovie, setFeaturedMovie] = useState<Movie | null>(null);

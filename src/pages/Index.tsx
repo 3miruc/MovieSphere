@@ -39,7 +39,8 @@ const Index = () => {
           isLoading={trendingLoading}
           error={trendingError as Error}
         />
-          <GenreSelector 
+        
+        <GenreSelector 
           selectedGenre={selectedGenre} 
           onChange={handleGenreChange} 
         />
