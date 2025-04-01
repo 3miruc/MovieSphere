@@ -26,18 +26,10 @@ const MovieCard = ({ movie, highlighted = false }: MovieCardProps) => {
             className="object-cover w-full h-full"
           />
           
-          {/* Show either user rating or TMDB rating, not both */}
-          {userRating ? (
-            <div className="absolute top-2 right-2 flex items-center space-x-1 bg-dark-900/80 backdrop-blur-sm text-white rounded px-2 py-1">
-              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 mr-1" />
-              <span className="text-sm font-semibold">{userRating}/10</span>
-            </div>
-          ) : (
-            <div className="absolute top-2 left-2 flex items-center space-x-1 bg-dark-900/80 backdrop-blur-sm text-white rounded px-2 py-1">
-              <Star className="h-4 w-4 text-yellow-400 mr-1" />
-              <span className="text-sm font-semibold">{movie.rating.toFixed(1)}</span>
-            </div>
-          )}
+          <div className="absolute top-2 left-2 flex items-center space-x-1 bg-dark-900/80 backdrop-blur-sm text-white rounded px-2 py-1">
+            <Star className="h-4 w-4 text-yellow-400 mr-1" />
+            <span className="text-sm font-semibold">{movie.rating.toFixed(1)}</span>
+          </div>
           
           {movie.type === 'series' && (
             <Badge variant="default" className="absolute bottom-2 right-2 bg-cinema-600 text-white">
