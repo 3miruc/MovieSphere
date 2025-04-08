@@ -1,107 +1,106 @@
 
 /**
  * Types pour les données TMDB
- * Définit toutes les interfaces et types utilisés dans les services
  */
 
-// Types de médias supportés (film ou série)
+// Types de médias supportés
 export type MediaType = 'movie' | 'tv';
 
 // Structure d'un genre
 export interface Genre {
-  id: number;      // Identifiant unique du genre
-  name: string;    // Nom du genre (ex: Action, Comédie)
+  id: number;
+  name: string;
 }
 
-// Configuration d'un filtre de recherche pour la découverte
+// Configuration d'un filtre de recherche
 export interface DiscoverFilter {
-  with_genres?: string;     // Filtrer par genres (IDs séparés par virgules)
-  sort_by?: string;         // Tri des résultats (ex: popularity.desc)
-  page?: number;            // Numéro de page pour la pagination
-  include_adult?: boolean;  // Inclure ou non le contenu adulte
-  language?: string;        // Langue des résultats (ex: fr-FR)
+  with_genres?: string;
+  sort_by?: string;
+  page?: number;
+  include_adult?: boolean;
+  language?: string;
 }
 
-// Structure d'une page de résultats paginés
+// Structure d'une page de résultats
 export interface ResultsPage<T> {
-  page: number;            // Numéro de la page courante
-  results: T[];            // Tableau des résultats
-  total_pages: number;     // Nombre total de pages disponibles
-  total_results: number;   // Nombre total de résultats
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
 }
 
-// Informations de base d'un média (film ou série)
+// Informations de base d'un média
 export interface MediaBasic {
-  id: number;                   // Identifiant unique du média
-  title?: string;               // Titre (pour les films)
-  name?: string;                // Nom (pour les séries)
-  poster_path: string | null;   // Chemin de l'affiche
-  backdrop_path: string | null; // Chemin de l'image de fond
-  vote_average: number;         // Note moyenne
-  overview: string;             // Description/synopsis
-  release_date?: string;        // Date de sortie (pour les films)
-  first_air_date?: string;      // Date de première diffusion (pour les séries)
-  genre_ids: number[];          // IDs des genres associés
-  media_type?: MediaType;       // Type de média (film ou série)
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  vote_average: number;
+  overview: string;
+  release_date?: string;
+  first_air_date?: string;
+  genre_ids: number[];
+  media_type?: MediaType;
 }
 
-// Informations complètes d'un média (extension de MediaBasic)
+// Informations complètes d'un média
 export interface MediaDetails extends Omit<MediaBasic, 'genre_ids'> {
-  genres: Genre[];              // Liste des genres (objets complets, pas juste IDs)
-  tagline?: string;             // Slogan ou accroche
-  status?: string;              // Statut (ex: Released, In Production)
-  runtime?: number;             // Durée en minutes (pour les films)
-  episode_run_time?: number[];  // Durées des épisodes (pour les séries)
-  number_of_seasons?: number;   // Nombre de saisons (pour les séries)
-  number_of_episodes?: number;  // Nombre d'épisodes (pour les séries)
-  created_by?: Array<{          // Créateurs (pour les séries)
-    id: number;                 // ID du créateur
-    name: string;               // Nom du créateur
-    profile_path: string | null; // Photo du créateur
+  genres: Genre[];
+  tagline?: string;
+  status?: string;
+  runtime?: number;
+  episode_run_time?: number[];
+  number_of_seasons?: number;
+  number_of_episodes?: number;
+  created_by?: Array<{
+    id: number;
+    name: string;
+    profile_path: string | null;
   }>;
-  production_companies: Array<{ // Sociétés de production
-    id: number;                 // ID de la société
-    name: string;               // Nom de la société
-    logo_path: string | null;   // Logo de la société
+  production_companies: Array<{
+    id: number;
+    name: string;
+    logo_path: string | null;
   }>;
-  credits?: {                   // Crédits (acteurs, équipe)
-    cast: Array<{               // Distribution (acteurs)
-      id: number;               // ID de l'acteur
-      name: string;             // Nom de l'acteur
-      character: string;        // Personnage joué
-      profile_path: string | null; // Photo de l'acteur
+  credits?: {
+    cast: Array<{
+      id: number;
+      name: string;
+      character: string;
+      profile_path: string | null;
     }>;
-    crew: Array<{               // Équipe technique
-      id: number;               // ID du membre d'équipe
-      name: string;             // Nom du membre d'équipe
-      job: string;              // Poste occupé
-      profile_path: string | null; // Photo du membre d'équipe
+    crew: Array<{
+      id: number;
+      name: string;
+      job: string;
+      profile_path: string | null;
     }>;
   };
-  videos?: {                    // Vidéos associées
-    results: Array<{            // Résultats des vidéos
-      id: string;               // ID de la vidéo
-      key: string;              // Clé YouTube ou autre
-      name: string;             // Nom de la vidéo
-      site: string;             // Site hébergeant la vidéo
-      type: string;             // Type de vidéo (ex: Trailer)
+  videos?: {
+    results: Array<{
+      id: string;
+      key: string;
+      name: string;
+      site: string;
+      type: string;
     }>;
   };
 }
 
 // Structure d'un acteur
 export interface Actor {
-  id: number;                  // ID de l'acteur
-  name: string;                // Nom de l'acteur
-  character: string;           // Personnage joué
-  profile_path: string | null; // Chemin de la photo de profil
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
 }
 
 // Vidéos associées à un média
 export interface VideoResult {
-  id: string;    // ID de la vidéo
-  key: string;   // Clé YouTube ou autre plateforme
-  name: string;  // Nom de la vidéo
-  site: string;  // Site hébergeant la vidéo (ex: YouTube)
-  type: string;  // Type de vidéo (ex: Trailer, Teaser)
+  id: string;
+  key: string;
+  name: string;
+  site: string;
+  type: string;
 }

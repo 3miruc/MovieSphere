@@ -1,22 +1,20 @@
 
 /**
  * Service pour la gestion des genres de médias
- * Fournit des fonctions pour récupérer et manipuler les genres
  */
+import { fetchFromTMDB } from './utils';
+import type { Genre, MediaType } from './types';
 
-import { fetchFromTMDB } from './utils'; // Import de la fonction utilitaire
-import type { Genre, MediaType } from './types'; // Import des types
-
-// Cache immutable pour stocker les genres par type (utilisation de const pour éviter toute modification accidentelle)
+// Cache immutable pour stocker les genres par type
 const genresCache: Record<MediaType, Genre[]> = {
-  movie: [], // Cache pour les genres de films
-  tv: []     // Cache pour les genres de séries
+  movie: [],
+  tv: []
 };
 
-// Statut de chargement des genres pour éviter les requêtes en parallèle
+// Statut de chargement des genres
 const loadingStatus: Record<MediaType, boolean> = {
-  movie: false, // Indique si les genres de films sont en cours de chargement
-  tv: false     // Indique si les genres de séries sont en cours de chargement
+  movie: false,
+  tv: false
 };
 
 /**
@@ -25,64 +23,61 @@ const loadingStatus: Record<MediaType, boolean> = {
  * @returns Liste des genres
  */
 export async function fetchGenres(mediaType: MediaType): Promise<Genre[]> {
-  // Vérifier si les genres sont déjà en cache pour éviter une requête inutile
+  // Vérifier si les genres sont déjà en cache
   if (genresCache[mediaType].length > 0) {
-    return genresCache[mediaType]; // Retourner les genres en cache
+    return genresCache[mediaType];
   }
   
-  // Éviter les requêtes en parallèle pour le même type de média
+  // Éviter les requêtes en parallèle pour le même type
   if (loadingStatus[mediaType]) {
-    // Attendre que les données soient chargées via une promesse
+    // Attendre que les données soient chargées
     return new Promise(resolve => {
       const checkCache = () => {
         if (genresCache[mediaType].length > 0) {
-          resolve(genresCache[mediaType]); // Résoudre la promesse quand les données sont disponibles
+          resolve(genresCache[mediaType]);
         } else {
-          setTimeout(checkCache, 100); // Vérifier à nouveau après un court délai
+          setTimeout(checkCache, 100);
         }
       };
-      checkCache(); // Démarrer la vérification
+      checkCache();
     });
   }
   
   try {
-    loadingStatus[mediaType] = true; // Marquer comme en cours de chargement
-    // Récupérer les genres depuis l'API TMDB
+    loadingStatus[mediaType] = true;
     const response = await fetchFromTMDB<{ genres: Genre[] }>(`/genre/${mediaType}/list`);
     
-    // Mettre à jour le cache avec les nouvelles données (clone pour éviter les modifications par référence)
+    // Mettre à jour le cache avec les nouvelles données
     genresCache[mediaType] = [...response.genres];
-    return genresCache[mediaType]; // Retourner les genres récupérés
+    return genresCache[mediaType];
   } catch (error) {
-    console.error(`Error fetching ${mediaType} genres:`, error); // Journaliser l'erreur
-    return []; // Retourner un tableau vide en cas d'erreur
+    console.error(`Error fetching ${mediaType} genres:`, error);
+    return [];
   } finally {
-    loadingStatus[mediaType] = false; // Marquer comme terminé quel que soit le résultat
+    loadingStatus[mediaType] = false;
   }
 }
 
 /**
  * Récupère les noms des genres à partir de leurs IDs
- * @param genreIds - IDs des genres à rechercher
+ * @param genreIds - IDs des genres
  * @param mediaType - Type de média
- * @returns Tableau des noms de genres correspondants
+ * @returns Noms des genres
  */
 export async function getGenreNames(genreIds: number[], mediaType: MediaType): Promise<string[]> {
-  const genres = await fetchGenres(mediaType); // Récupérer tous les genres
-  
-  // Filtrer pour trouver les genres correspondant aux IDs et extraire leurs noms
+  const genres = await fetchGenres(mediaType);
   return genreIds
-    .map(id => genres.find(genre => genre.id === id)?.name) // Trouver chaque genre par ID
-    .filter((name): name is string => !!name); // Filtrer les noms null/undefined
+    .map(id => genres.find(genre => genre.id === id)?.name)
+    .filter((name): name is string => !!name);
 }
 
 /**
  * Récupère un genre par son ID
- * @param genreId - ID du genre à rechercher
+ * @param genreId - ID du genre
  * @param mediaType - Type de média
- * @returns Objet genre ou undefined si non trouvé
+ * @returns Objet genre ou undefined
  */
 export async function getGenreById(genreId: number, mediaType: MediaType): Promise<Genre | undefined> {
-  const genres = await fetchGenres(mediaType); // Récupérer tous les genres
-  return genres.find(genre => genre.id === genreId); // Trouver le genre par ID
+  const genres = await fetchGenres(mediaType);
+  return genres.find(genre => genre.id === genreId);
 }
