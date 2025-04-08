@@ -1,75 +1,52 @@
-/**
- * Configuration de l'API TMDB
- * Ce fichier contient toutes les constantes et configurations nécessaires
- * pour interagir avec l'API TMDB (The Movie Database)
- */
 
 /**
- * URL de base pour l'API TMDB
+ * Configuration des services TMDB
+ * Contient toutes les constantes nécessaires pour interagir avec l'API
  */
-export const TMDB_API_BASE_URL = import.meta.env.VITE_TMDB_API_BASE_URL || 'https://api.themoviedb.org/3';
 
-/**
- * Clé API pour accéder à TMDB
- */
-export const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+// URL de base de l'API TMDB
+export const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
-/**
- * Token d'accès pour l'API TMDB (alternative à la clé API)
- */
-export const TMDB_API_TOKEN = import.meta.env.VITE_TMDB_API_TOKEN || '';
+// Clé API pour les requêtes TMDB
+// Utilisation d'une clé de secours en cas d'absence de la variable d'environnement
+// Note: Dans Vite, les variables d'environnement doivent être préfixées par VITE_
+export const TMDB_API_KEY = typeof import.meta === 'object' && 
+                           'env' in import.meta && 
+                           import.meta.env.VITE_TMDB_API_KEY || 
+                           'fallback_key';
 
-/**
- * URL de base pour les images TMDB
- */
+// URL de base pour les images TMDB
 export const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 
-/**
- * Options de taille d'images disponibles pour les posters
- */
-export const POSTER_SIZES = {
-  SMALL: 'w185',
-  MEDIUM: 'w342',
-  LARGE: 'w500',
-  ORIGINAL: 'original'
-};
-
-/**
- * Options de taille d'images disponibles pour les backdrops
- */
-export const BACKDROP_SIZES = {
-  SMALL: 'w300',
-  MEDIUM: 'w780',
-  LARGE: 'w1280',
-  ORIGINAL: 'original'
-};
-
-/**
- * Options de taille d'images disponibles pour les profils
- */
-export const PROFILE_SIZES = {
-  SMALL: 'w45',
-  MEDIUM: 'w185',
-  LARGE: 'h632',
-  ORIGINAL: 'original'
-};
-
-/**
- * Configuration par défaut pour les requêtes fetch vers l'API TMDB
- */
+// Options par défaut pour les requêtes fetch (incluant l'authentification)
 export const DEFAULT_FETCH_OPTIONS = {
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${TMDB_API_TOKEN}`
+    'Content-Type': 'application/json', // Type de contenu JSON
+    Authorization: `Bearer ${TMDB_API_KEY}` // Authentification avec token Bearer
   }
 };
 
-/**
- * Liste des langues disponibles pour les requêtes API
- */
-export const AVAILABLE_LANGUAGES = ['fr-FR', 'en-US'];
-
-/**
- * Langue par défaut pour les requêtes API
- */
-export const DEFAULT_LANGUAGE = 'fr-FR';
+// Tailles d'images disponibles selon le type (backdrop, poster, profile)
+export const IMAGE_SIZES = {
+  backdrop: {
+    small: 'w300', // Petite taille pour les backdrops
+    medium: 'w780', // Taille moyenne
+    large: 'w1280', // Grande taille
+    original: 'original' // Taille originale
+  },
+  poster: {
+    xsmall: 'w92', // Très petite taille pour les posters
+    small: 'w154', // Petite taille
+    medium: 'w185', // Taille moyenne
+    large: 'w342', // Grande taille
+    xlarge: 'w500', // Très grande taille
+    xxlarge: 'w780', // Très très grande taille
+    original: 'original' // Taille originale
+  },
+  profile: {
+    small: 'w45', // Petite taille pour les photos de profil
+    medium: 'w185', // Taille moyenne
+    large: 'h632', // Grande taille
+    original: 'original' // Taille originale
+  }
+};
