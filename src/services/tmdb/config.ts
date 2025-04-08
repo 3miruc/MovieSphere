@@ -1,4 +1,3 @@
-
 /**
  * Configuration de l'API TMDB
  * Ce fichier contient toutes les constantes et configurations nécessaires
@@ -14,6 +13,11 @@ export const TMDB_API_BASE_URL = import.meta.env.VITE_TMDB_API_BASE_URL || 'http
  * Clé API pour accéder à TMDB
  */
 export const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || '';
+
+/**
+ * Token d'accès pour l'API TMDB (alternative à la clé API)
+ */
+export const TMDB_API_TOKEN = import.meta.env.VITE_TMDB_API_TOKEN || '';
 
 /**
  * URL de base pour les images TMDB
@@ -56,7 +60,7 @@ export const PROFILE_SIZES = {
 export const DEFAULT_FETCH_OPTIONS = {
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${TMDB_API_KEY}`
+    'Authorization': `Bearer ${TMDB_API_TOKEN}`
   }
 };
 

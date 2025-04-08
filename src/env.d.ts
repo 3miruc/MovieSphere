@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   // Variables d'environnement TMDB
   readonly VITE_TMDB_API_KEY: string;
   readonly VITE_TMDB_API_BASE_URL: string;
+  readonly VITE_TMDB_API_TOKEN: string;
   // Ajouter d'autres variables d'environnement au besoin
 }
 

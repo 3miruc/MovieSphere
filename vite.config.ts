@@ -22,6 +22,9 @@ export default defineConfig(({ mode }) => ({
   },
   // Définir les variables d'environnement par défaut si nécessaire
   define: {
-    // Vous pouvez définir des valeurs par défaut ici si nécessaire
+    // S'assurer que les variables d'environnement sont correctement définies
+    'import.meta.env.VITE_TMDB_API_BASE_URL': JSON.stringify(process.env.VITE_TMDB_API_BASE_URL || 'https://api.themoviedb.org/3'),
+    'import.meta.env.VITE_TMDB_API_KEY': JSON.stringify(process.env.VITE_TMDB_API_KEY || ''),
+    'import.meta.env.VITE_TMDB_API_TOKEN': JSON.stringify(process.env.VITE_TMDB_API_TOKEN || '')
   }
 }));

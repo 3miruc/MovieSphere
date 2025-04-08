@@ -1,4 +1,3 @@
-
 /**
  * API service pour interagir avec The Movie Database (TMDB)
  * Ce fichier contient toutes les fonctions pour récupérer les données depuis l'API TMDB
@@ -6,7 +5,8 @@
 
 import { 
   TMDB_API_BASE_URL, 
-  TMDB_API_KEY, 
+  TMDB_API_KEY,
+  TMDB_API_TOKEN,
   DEFAULT_FETCH_OPTIONS, 
   DEFAULT_LANGUAGE 
 } from './config';
@@ -64,7 +64,6 @@ export async function getMovieDetails(
 ): Promise<MovieDetails> {
   // Construction de l'URL avec l'ID du film et les paramètres
   const url = new URL(`${TMDB_API_BASE_URL}/movie/${movieId}`);
-  url.searchParams.append('api_key', TMDB_API_KEY);
   url.searchParams.append('language', language);
 
   // Exécution de la requête
@@ -91,7 +90,6 @@ export async function getTVShowDetails(
 ): Promise<TVShowDetails> {
   // Construction de l'URL avec l'ID de la série et les paramètres
   const url = new URL(`${TMDB_API_BASE_URL}/tv/${tvShowId}`);
-  url.searchParams.append('api_key', TMDB_API_KEY);
   url.searchParams.append('language', language);
 
   // Exécution de la requête
@@ -118,7 +116,6 @@ export async function searchMoviesAndTVShows(
 ): Promise<{results: SearchResult[]}> {
   // Construction de l'URL avec le terme de recherche et les paramètres
   const url = new URL(`${TMDB_API_BASE_URL}/search/multi`);
-  url.searchParams.append('api_key', TMDB_API_KEY);
   url.searchParams.append('language', language);
   url.searchParams.append('query', query);
   url.searchParams.append('include_adult', 'false');
@@ -147,7 +144,6 @@ export async function getPopularMovies(
 ): Promise<{results: SearchResult[], total_pages: number}> {
   // Construction de l'URL avec les paramètres
   const url = new URL(`${TMDB_API_BASE_URL}/movie/popular`);
-  url.searchParams.append('api_key', TMDB_API_KEY);
   url.searchParams.append('language', language);
   url.searchParams.append('page', page.toString());
   
