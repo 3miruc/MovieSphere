@@ -3,7 +3,7 @@
  * Service pour la récupération des détails de médias
  */
 import { fetchFromTMDB } from './utils';
-import type { MediaDetails, MediaType, Actor, VideoResult } from './types';
+import type { MediaDetails, MediaType, Actor, VideoResult, WatchProviders } from './types';
 
 /**
  * Récupère les détails complets d'un média
@@ -15,7 +15,7 @@ export async function fetchMediaDetails(id: number, mediaType: MediaType): Promi
   return fetchFromTMDB<MediaDetails>(
     `/${mediaType}/${id}`,
     {
-      append_to_response: 'credits,videos'
+      append_to_response: 'credits,videos,watch/providers'
     }
   );
 }
@@ -77,6 +77,36 @@ export async function fetchTrailer(id: number, mediaType: MediaType): Promise<Vi
     return videos.length > 0 ? videos[0] : null;
   } catch (error) {
     console.error(`Error fetching trailer for ${mediaType} ${id}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Récupère les plateformes de diffusion d'un média
+ * @param id - ID du média
+ * @param mediaType - Type de média
+ * @param country - Code du pays (ex: 'FR' pour France)
+ * @returns Plateformes disponibles ou null
+ */
+export async function fetchWatchProviders(
+  id: number, 
+  mediaType: MediaType, 
+  country: string = 'FR'
+): Promise<{
+  flatrate?: Array<{provider_id: number; provider_name: string; logo_path: string}>;
+  rent?: Array<{provider_id: number; provider_name: string; logo_path: string}>;
+  buy?: Array<{provider_id: number; provider_name: string; logo_path: string}>;
+  link?: string;
+} | null> {
+  try {
+    const details = await fetchMediaDetails(id, mediaType);
+    if (!details.watch_providers?.results) {
+      return null;
+    }
+    
+    return details.watch_providers.results[country] || null;
+  } catch (error) {
+    console.error(`Error fetching watch providers for ${mediaType} ${id}:`, error);
     return null;
   }
 }

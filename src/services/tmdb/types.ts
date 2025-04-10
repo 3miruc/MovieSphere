@@ -86,6 +86,29 @@ export interface MediaDetails extends Omit<MediaBasic, 'genre_ids'> {
       type: string;
     }>;
   };
+  // Ajout d'informations sur les plateformes de diffusion ("watch providers")
+  watch_providers?: {
+    results: {
+      [country: string]: {
+        link: string;
+        flatrate?: Array<{
+          provider_id: number;
+          provider_name: string;
+          logo_path: string;
+        }>;
+        rent?: Array<{
+          provider_id: number;
+          provider_name: string;
+          logo_path: string;
+        }>;
+        buy?: Array<{
+          provider_id: number;
+          provider_name: string;
+          logo_path: string;
+        }>;
+      };
+    };
+  };
 }
 
 // Structure d'un acteur
@@ -103,4 +126,23 @@ export interface VideoResult {
   name: string;
   site: string;
   type: string;
+}
+
+// Structure pour les plateformes de diffusion (providers)
+export interface WatchProvider {
+  provider_id: number;
+  provider_name: string;
+  logo_path: string;
+}
+
+// Structure pour les plateformes par pays
+export interface WatchProviders {
+  results: {
+    [country: string]: {
+      link: string;
+      flatrate?: WatchProvider[];
+      rent?: WatchProvider[];
+      buy?: WatchProvider[];
+    };
+  };
 }

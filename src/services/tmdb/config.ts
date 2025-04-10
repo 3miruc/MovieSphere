@@ -7,7 +7,7 @@
 export const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 // Clé API pour les requêtes TMDB
-export const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY || 'fallback_key';
+export const TMDB_API_KEY = 'c2521840e0cfff7c88c564de23f7cac4';
 
 // URL de base pour les images TMDB
 export const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
