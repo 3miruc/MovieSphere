@@ -1,28 +1,28 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Film, Filter } from 'lucide-react';
+import { Tv, Filter } from 'lucide-react';
 import Navbar from '../common/Navbar';
 import MediaCard from '../ui/MediaCard';
 import { fetchPopular, fetchGenres, getGenreNames, type MediaBasic } from '../../services/tmdb';
 
-const MoviesPage: React.FC = () => {
-  // Récupération des films populaires avec React Query
-  const { data: moviesData, isLoading, error } = useQuery({
-    queryKey: ['popularMovies'],
-    queryFn: () => fetchPopular('movie'),
+const TvShowsPage: React.FC = () => {
+  // Récupération des séries populaires avec React Query
+  const { data: tvShowsData, isLoading, error } = useQuery({
+    queryKey: ['popularTvShows'],
+    queryFn: () => fetchPopular('tv'),
   });
 
-  // Récupération des genres de films pour les cartes
+  // Récupération des genres de séries pour les cartes
   const { data: genres } = useQuery({
-    queryKey: ['movieGenres'],
-    queryFn: () => fetchGenres('movie'),
+    queryKey: ['tvGenres'],
+    queryFn: () => fetchGenres('tv'),
   });
 
-  // Obtenir les noms de genres pour chaque film
-  const getGenres = (movie: MediaBasic) => {
+  // Obtenir les noms de genres pour chaque série
+  const getGenres = (tvShow: MediaBasic) => {
     if (!genres) return [];
-    return movie.genre_ids
+    return tvShow.genre_ids
       .map(id => genres.find(genre => genre.id === id)?.name)
       .filter(Boolean) as string[];
   };
@@ -33,8 +33,8 @@ const MoviesPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <Film className="h-8 w-8 text-purple-400" />
-            <h1 className="text-3xl font-bold">Films Populaires</h1>
+            <Tv className="h-8 w-8 text-purple-400" />
+            <h1 className="text-3xl font-bold">Séries Populaires</h1>
           </div>
           
           <button className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-full transition-colors duration-300">
@@ -46,7 +46,7 @@ const MoviesPage: React.FC = () => {
         {error ? (
           <div className="bg-red-900/30 border border-red-600 text-white rounded-lg p-6 mt-4">
             <p className="text-center">
-              Une erreur est survenue lors du chargement des films.
+              Une erreur est survenue lors du chargement des séries.
             </p>
           </div>
         ) : (
@@ -61,12 +61,12 @@ const MoviesPage: React.FC = () => {
                 </div>
               ))
             ) : (
-              // Affichage des films
-              moviesData?.results.map((movie) => (
+              // Affichage des séries
+              tvShowsData?.results.map((tvShow) => (
                 <MediaCard 
-                  key={movie.id} 
-                  media={movie} 
-                  genreNames={getGenres(movie)}
+                  key={tvShow.id} 
+                  media={tvShow} 
+                  genreNames={getGenres(tvShow)}
                   onToggleFavorite={() => {}} 
                 />
               ))
@@ -78,4 +78,4 @@ const MoviesPage: React.FC = () => {
   );
 };
 
-export default MoviesPage;
+export default TvShowsPage;
