@@ -21,8 +21,8 @@ export * from './discover';
 import * as genres from './genres';
 import * as trending from './trending';
 import * as details from './details';
-import * from './search';
-import * from './recommendations';
+import * as search from './search';
+import * as recommendations from './recommendations';
 import * as discover from './discover';
 
 // Services regroupés par domaine fonctionnel
