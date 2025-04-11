@@ -1,6 +1,6 @@
 # MovieSphere - Mon site de recommandations de films et séries
 
-Bienvenue sur MovieSphere, un site conçu pour vous aider à découvrir des films et des séries qui correspondent à vos goûts. Ce projet a été réalisé avec Node.js et Vue.js, et permet aux utilisateurs de naviguer à travers une large sélection de films et séries tout en bénéficiant d'une interface claire et intuitive.
+Bienvenue sur MovieSphere, un site conçu pour vous aider à découvrir des films et des séries qui correspondent à vos goûts. Ce projet a été réalisé avec react, et permet aux utilisateurs de naviguer à travers une large sélection de films et séries tout en bénéficiant d'une interface claire et intuitive.
 
 ## À propos du projet
 MovieSphere est une plateforme qui offre des recommandations de films et de séries. L'objectif principal est de simplifier la recherche en fonction de genres et de permettre aux utilisateurs de créer des listes de favoris.
